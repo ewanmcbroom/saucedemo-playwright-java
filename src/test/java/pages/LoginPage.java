@@ -1,19 +1,23 @@
 package pages;
 
 import com.microsoft.playwright.Page;
+import utils.ConfigManager;
 
 public class LoginPage {
 
     private final Page page;
 
-    private static final String URL = "https://www.saucedemo.com/";
 
     public LoginPage(Page page) {
         this.page = page;
     }
 
     public void open() {
-        page.navigate(URL);
+        ConfigManager config =
+                new ConfigManager();
+
+        page.navigate(
+                config.getUrl());
     }
 
     public void login(String username, String password) {
