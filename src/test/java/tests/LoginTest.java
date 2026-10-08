@@ -77,4 +77,14 @@ public class LoginTest extends BaseTest {
                 "secret_sauce"
         );
     }
+
+    @Test
+    void screenshotTest() {
+
+        LoginPage loginPage = new LoginPage(page);
+
+        loginPage.open();
+
+        takeScreenshot("homePage");
+    }
 }

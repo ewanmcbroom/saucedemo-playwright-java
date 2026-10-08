@@ -27,4 +27,14 @@ public class ConfigManager {
     public String getUrl() {
         return properties.getProperty("url");
     }
+
+    public String getBrowser() {
+        return properties.getProperty("browser");
+    }
+
+    public boolean isHeadless() {
+        return Boolean.parseBoolean(
+                properties.getProperty("headless")
+        );
+    }
 }
