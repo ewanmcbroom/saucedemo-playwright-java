@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import pages.LoginPage;
 import pages.InventoryPage;
 import utils.TestDataReader;
@@ -17,6 +19,7 @@ import tests.LoginTest;
 import java.util.List;
 
 @ExtendWith(listeners.ScreenshotOnFailureExtension.class)
+@Execution(ExecutionMode.CONCURRENT)
 public class LoginTest extends BaseTest {
 
     @Test
@@ -52,6 +55,11 @@ public class LoginTest extends BaseTest {
         loginPage.login(
                 username,
                 "secret_sauce"
+        );
+
+        System.out.println(
+                "Running on thread: "
+                        + Thread.currentThread().getName()
         );
     }
 

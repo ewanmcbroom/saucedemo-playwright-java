@@ -92,6 +92,11 @@ public class ProductTest extends BaseTest {
                             product.getName()
                     )
             );
+
+            System.out.println(
+                    "Running on thread: "
+                            + Thread.currentThread().getName()
+            );
         }
     }
 }
