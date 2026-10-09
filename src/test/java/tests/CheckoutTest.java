@@ -5,6 +5,10 @@ import pages.CartPage;
 import pages.CheckoutPage;
 import pages.InventoryPage;
 import pages.LoginPage;
+import utils.CheckoutData;
+import utils.CsvDataReader;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -120,5 +124,58 @@ public class CheckoutTest extends BaseTest {
                 actualSubtotal,
                 0.01
         );
+    }
+
+    @Test
+    void checkoutUsingCsvData() {
+
+        CsvDataReader reader =
+                new CsvDataReader();
+
+        List<CheckoutData> data =
+                reader.getCheckoutData();
+
+        for (CheckoutData row : data) {
+
+            LoginPage loginPage =
+                    new LoginPage(page);
+
+            InventoryPage inventoryPage =
+                    new InventoryPage(page);
+
+            CartPage cartPage =
+                    new CartPage(page);
+
+            CheckoutPage checkoutPage =
+                    new CheckoutPage(page);
+
+            loginPage.open();
+
+            loginPage.login(
+                    "standard_user",
+                    "secret_sauce"
+            );
+
+            inventoryPage.addProductToCart(
+                    "Sauce Labs Backpack"
+            );
+
+            inventoryPage.openCart();
+
+            cartPage.clickCheckout();
+
+            checkoutPage.enterDetails(
+                    row.getFirstName(),
+                    row.getLastName(),
+                    row.getPostcode()
+            );
+
+            checkoutPage.clickContinue();
+            checkoutPage.clickFinish();
+
+            assertTrue(
+                    checkoutPage.isOrderCompleted()
+            );
+        }
     }
 }

@@ -9,12 +9,10 @@ import com.microsoft.playwright.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import utils.ConfigManager;
+import utils.*;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import listeners.ScreenshotOnFailureExtension;
-import utils.ProductData;
-import utils.ProductDataReader;
 
 @ExtendWith(ScreenshotOnFailureExtension.class)
 public class BaseTest {
@@ -115,4 +113,22 @@ public class BaseTest {
 
         }
     }
+
+    @Test
+    void printCsvData() {
+
+        CsvDataReader reader =
+                new CsvDataReader();
+
+        List<CheckoutData> data =
+                reader.getCheckoutData();
+
+        for (CheckoutData row : data) {
+
+            System.out.println(
+                    row.getFirstName()
+            );
+        }
+    }
+
 }
