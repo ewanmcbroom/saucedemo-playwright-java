@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import pages.LoginPage;
@@ -15,32 +16,8 @@ import tests.LoginTest;
 
 import java.util.List;
 
+@ExtendWith(listeners.ScreenshotOnFailureExtension.class)
 public class LoginTest extends BaseTest {
-
-    @Test
-    void successfulLogin() {
-
-        LoginPage loginPage = new LoginPage(page);
-        InventoryPage inventoryPage = new InventoryPage(page);
-
-        loginPage.open();
-
-        TestDataReader reader = new TestDataReader();
-
-        List<UserData> users = reader.getUsers();
-
-        for (UserData user : users) {
-
-            loginPage.login(
-                    user.getUsername(),
-                    user.getPassword()
-            );
-        }
-
-        assertTrue(
-                inventoryPage.isDisplayed()
-        );
-    }
 
     @Test
     void invalidLogin() {
@@ -62,7 +39,7 @@ public class LoginTest extends BaseTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "standard_user",
+            "standard_user1",
             "problem_user",
             "performance_glitch_user"
     })
@@ -86,5 +63,10 @@ public class LoginTest extends BaseTest {
         loginPage.open();
 
         takeScreenshot("homePage");
+    }
+
+    @Test
+    void failTest() {
+        assertTrue(false);
     }
 }

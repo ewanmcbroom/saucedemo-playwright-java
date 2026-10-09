@@ -32,4 +32,16 @@ public class CheckoutPage {
                 .textContent()
                 .equals("Thank you for your order!");
     }
+
+    public double getDisplayedSubtotal() {
+
+        String subtotal = page.locator(
+                ".summary_subtotal_label"
+        ).textContent();
+
+        subtotal = subtotal
+                .replace("Item total: $", "");
+
+        return Double.parseDouble(subtotal);
+    }
 }

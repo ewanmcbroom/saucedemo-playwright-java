@@ -4,6 +4,10 @@ import org.junit.jupiter.api.Test;
 import pages.CartPage;
 import pages.InventoryPage;
 import pages.LoginPage;
+import utils.ProductData;
+import utils.ProductDataReader;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -55,5 +59,39 @@ public class ProductTest extends BaseTest {
         cartPage.removeBackpack();
 
         assertTrue(cartPage.isCartEmpty());
+    }
+
+    @Test
+    void validateAllProducts() {
+
+        LoginPage loginPage = new LoginPage(page);
+        InventoryPage inventoryPage = new InventoryPage(page);
+        ProductDataReader reader = new ProductDataReader();
+
+        loginPage.open();
+        loginPage.login(
+                "standard_user",
+                "secret_sauce"
+        );
+
+        List<ProductData> products =
+                reader.getProducts();
+
+        for (ProductData product : products) {
+
+            assertEquals(
+                    product.getName(),
+                    inventoryPage.getProductName(
+                            product.getName()
+                    )
+            );
+
+            assertEquals(
+                    product.getPrice(),
+                    inventoryPage.getProductPrice(
+                            product.getName()
+                    )
+            );
+        }
     }
 }

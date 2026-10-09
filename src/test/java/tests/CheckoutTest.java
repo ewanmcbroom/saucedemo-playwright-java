@@ -6,6 +6,7 @@ import pages.CheckoutPage;
 import pages.InventoryPage;
 import pages.LoginPage;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CheckoutTest extends BaseTest {
@@ -42,6 +43,82 @@ public class CheckoutTest extends BaseTest {
 
         assertTrue(
                 checkoutPage.isOrderCompleted()
+        );
+    }
+
+    @Test
+    void validateBasketSubtotal() {
+
+        LoginPage loginPage = new LoginPage(page);
+        InventoryPage inventoryPage = new InventoryPage(page);
+        CartPage cartPage = new CartPage(page);
+        CheckoutPage checkoutPage = new CheckoutPage(page);
+
+        // Login
+        loginPage.open();
+        loginPage.login(
+                "standard_user",
+                "secret_sauce"
+        );
+
+        // Calculate expected subtotal
+        double expectedSubtotal = 0;
+
+        expectedSubtotal += inventoryPage.getProductPrice(
+                "Sauce Labs Backpack"
+        );
+
+        expectedSubtotal += inventoryPage.getProductPrice(
+                "Sauce Labs Bike Light"
+        );
+
+        expectedSubtotal += inventoryPage.getProductPrice(
+                "Sauce Labs Fleece Jacket"
+        );
+
+        // Add products
+        inventoryPage.addProductToCart(
+                "Sauce Labs Backpack"
+        );
+
+        inventoryPage.addProductToCart(
+                "Sauce Labs Bike Light"
+        );
+
+        inventoryPage.addProductToCart(
+                "Sauce Labs Fleece Jacket"
+        );
+
+        // Checkout
+        inventoryPage.openCart();
+
+        cartPage.clickCheckout();
+
+        checkoutPage.enterDetails(
+                "Ewan",
+                "McBroom",
+                "TF3 4NT"
+        );
+
+        checkoutPage.clickContinue();
+
+        // Read displayed subtotal
+        double actualSubtotal =
+                checkoutPage.getDisplayedSubtotal();
+
+        System.out.println(
+                "Expected: " + expectedSubtotal
+        );
+
+        System.out.println(
+                "Actual: " + actualSubtotal
+        );
+
+        // Validate
+        assertEquals(
+                expectedSubtotal,
+                actualSubtotal,
+                0.01
         );
     }
 }

@@ -3,17 +3,26 @@ package tests;
 import com.microsoft.playwright.Page;
 
 import java.nio.file.Paths;
+import java.util.List;
+
 import com.microsoft.playwright.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import utils.ConfigManager;
 
+import org.junit.jupiter.api.extension.ExtendWith;
+import listeners.ScreenshotOnFailureExtension;
+import utils.ProductData;
+import utils.ProductDataReader;
+
+@ExtendWith(ScreenshotOnFailureExtension.class)
 public class BaseTest {
 
     protected Playwright playwright;
     protected Browser browser;
     protected BrowserContext context;
-    protected Page page;
+    protected static Page page;
 
     protected void takeScreenshot(String testName) {
 
@@ -29,6 +38,11 @@ public class BaseTest {
                                 )
                         )
         );
+    }
+
+
+    public static Page getPage() {
+        return page;
     }
 
     @BeforeEach
@@ -82,6 +96,23 @@ public class BaseTest {
 
         if (playwright != null) {
             playwright.close();
+        }
+    }
+
+    @Test
+    void printProducts() {
+
+        ProductDataReader reader =
+                new ProductDataReader();
+
+        List<ProductData> products =
+                reader.getProducts();
+
+        for (ProductData product : products) {
+
+            System.out.println(product.getName());
+            System.out.println(product.getPrice());
+
         }
     }
 }
